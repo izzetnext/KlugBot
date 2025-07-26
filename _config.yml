@@ -1,0 +1,21 @@
+# GitHub Pages Configuration for KlugBot
+title: "KlugBot - Interactive Voice Quiz"
+description: "An interactive voice-controlled quiz application with multi-language support"
+baseurl: "/KlugBot"
+url: "https://izzetnext.github.io"
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+
+# Exclude files
+exclude:
+  - README.md
+  - .gitignore
+  - .git/

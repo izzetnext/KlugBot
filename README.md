@@ -2,6 +2,12 @@
 
 An interactive voice-controlled quiz application that uses speech recognition and synthesis technologies to create an engaging learning experience.
 
+## 🌐 Live Demo
+
+**[Try KlugBot Live](https://izzetnext.github.io/KlugBot/)**
+
+*Experience the interactive voice quiz directly in your browser!*
+
 ## ✨ Features
 
 - **Multi-language Support**: English, Turkish, German, Spanish, and French
