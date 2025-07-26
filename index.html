@@ -14,23 +14,14 @@
         </header>
 
         <main>
-            <div class="quiz-section">
-                <div class="question-display">
-                    <h2 id="question-text">Welcome to KlugBot! Click Start to begin.</h2>
-                    <div class="question-counter">
-                        <span id="current-question">0</span> / <span id="total-questions">0</span>
-                    </div>
-                </div>
-
-                <div class="controls">
-                    <button id="start-quiz" class="btn-primary">Start Quiz</button>
-                    <button id="speak-question" class="btn-secondary" disabled>🔊 Speak Question</button>
-                    
-                    <div class="microphone-section">
-                        <button id="mic-button" class="mic-btn" disabled>
-                            <img id="mic-icon" src="mic.gif" alt="Microphone">
-                        </button>
-                        <p id="mic-status">Click microphone to answer</p>
+            <div class="main-layout">
+                <!-- Sol Kolon - Soru ve Cevap Alanı -->
+                <div class="left-column">
+                    <div class="question-display">
+                        <h2 id="question-text">Welcome to KlugBot! Click Start to begin.</h2>
+                        <div class="question-counter">
+                            <span id="current-question">0</span> / <span id="total-questions">0</span>
+                        </div>
                     </div>
 
                     <div class="answer-section">
@@ -39,34 +30,49 @@
                     </div>
                 </div>
 
-                <div class="progress-section">
-                    <div class="progress-bar">
-                        <div id="progress-fill" class="progress-fill"></div>
-                    </div>
-                    <div class="score">
-                        Score: <span id="score">0</span> / <span id="total-score">0</span>
-                    </div>
-                </div>
+                <!-- Sağ Kolon - Kontroller ve Sonuçlar -->
+                <div class="right-column">
+                    <div class="controls-panel">
+                        <button id="start-quiz" class="btn-primary">Start Quiz</button>
+                        <button id="speak-question" class="btn-secondary" disabled>🔊 Speak Question</button>
+                        
+                        <div class="microphone-section">
+                            <button id="mic-button" class="mic-btn" disabled>
+                                <img id="mic-icon" src="mic.gif" alt="Microphone">
+                            </button>
+                            <p id="mic-status">Click microphone to answer</p>
+                        </div>
 
-                <div class="language-selection">
-                    <label for="language-select">Language:</label>
-                    <select id="language-select">
-                        <option value="en-US">English</option>
-                        <option value="tr-TR">Türkçe</option>
-                        <option value="de-DE">Deutsch</option>
-                        <option value="es-ES">Español</option>
-                        <option value="fr-FR">Français</option>
-                    </select>
-                </div>
-            </div>
+                        <div class="language-selection">
+                            <label for="language-select">Language:</label>
+                            <select id="language-select">
+                                <option value="en-US">English</option>
+                                <option value="tr-TR">Türkçe</option>
+                                <option value="de-DE">Deutsch</option>
+                                <option value="es-ES">Español</option>
+                                <option value="fr-FR">Français</option>
+                            </select>
+                        </div>
+                    </div>
 
-            <div class="results-section" id="results-section" style="display: none;">
-                <h2>Quiz Complete!</h2>
-                <div class="final-score">
-                    <p>Final Score: <span id="final-score">0</span> / <span id="final-total">0</span></p>
-                    <p>Percentage: <span id="percentage">0</span>%</p>
+                    <div class="progress-section">
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill"></div>
+                        </div>
+                        <div class="score">
+                            Score: <span id="score">0</span> / <span id="total-score">0</span>
+                        </div>
+                    </div>
+
+                    <div class="results-section" id="results-section" style="display: none;">
+                        <h3>Quiz Complete!</h3>
+                        <div class="final-score">
+                            <p>Final Score: <span id="final-score">0</span> / <span id="final-total">0</span></p>
+                            <p>Percentage: <span id="percentage">0</span>%</p>
+                        </div>
+                        <button id="restart-quiz" class="btn-primary">Start New Quiz</button>
+                    </div>
                 </div>
-                <button id="restart-quiz" class="btn-primary">Start New Quiz</button>
             </div>
         </main>
     </div>

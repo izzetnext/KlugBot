@@ -12,7 +12,7 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     background: white;
     border-radius: 20px;
@@ -42,6 +42,33 @@ main {
     padding: 30px;
 }
 
+/* İki Kolonlu Layout */
+.main-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    min-height: 500px;
+}
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.controls-panel {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
+}
+
 .quiz-section {
     margin-bottom: 30px;
 }
@@ -50,15 +77,16 @@ main {
     background: #f8f9fa;
     padding: 30px;
     border-radius: 15px;
-    margin-bottom: 30px;
     border-left: 5px solid #4facfe;
+    flex: 1;
 }
 
 .question-display h2 {
-    font-size: 1.5em;
+    font-size: 1.8em;
     color: #333;
     line-height: 1.4;
     margin-bottom: 15px;
+    min-height: 80px;
 }
 
 .question-counter {
@@ -68,9 +96,15 @@ main {
 }
 
 .controls {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 20px;
-    margin-bottom: 30px;
+}
+
+.controls-panel .btn-primary, 
+.controls-panel .btn-secondary {
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 .btn-primary, .btn-secondary {
@@ -160,9 +194,10 @@ main {
 
 .answer-section {
     background: #e9ecef;
-    padding: 20px;
+    padding: 25px;
     border-radius: 15px;
-    margin-top: 20px;
+    flex: 1;
+    min-height: 200px;
 }
 
 #user-answer {
@@ -198,7 +233,10 @@ main {
 }
 
 .progress-section {
-    margin-bottom: 30px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    border: 2px solid #e9ecef;
 }
 
 .progress-bar {
@@ -226,7 +264,9 @@ main {
 
 .language-selection {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid #dee2e6;
 }
 
 .language-selection label {
@@ -245,24 +285,25 @@ main {
 
 .results-section {
     text-align: center;
-    padding: 30px;
+    padding: 25px;
     background: #f8f9fa;
     border-radius: 15px;
+    border: 2px solid #28a745;
 }
 
-.results-section h2 {
+.results-section h3 {
     color: #333;
-    margin-bottom: 20px;
-    font-size: 2em;
+    margin-bottom: 15px;
+    font-size: 1.5em;
 }
 
 .final-score {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .final-score p {
-    font-size: 1.3em;
-    margin-bottom: 10px;
+    font-size: 1.1em;
+    margin-bottom: 8px;
     color: #333;
 }
 
@@ -271,6 +312,11 @@ main {
     .container {
         margin: 10px;
         border-radius: 15px;
+    }
+    
+    .main-layout {
+        grid-template-columns: 1fr;
+        gap: 20px;
     }
     
     header {
@@ -290,7 +336,12 @@ main {
     }
     
     .question-display h2 {
-        font-size: 1.3em;
+        font-size: 1.4em;
+        min-height: 60px;
+    }
+    
+    .controls-panel {
+        padding: 20px;
     }
     
     .mic-btn {
@@ -301,6 +352,11 @@ main {
     #mic-icon {
         width: 35px;
         height: 35px;
+    }
+    
+    .answer-section {
+        min-height: 150px;
+        padding: 20px;
     }
 }
 
