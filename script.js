@@ -14,6 +14,10 @@ class KlugBot {
         this.initializeSpeechRecognition();
         this.bindEvents();
         this.updateLanguage();
+        
+        // Ensure answer input is always enabled
+        this.elements.answerInput.disabled = false;
+        this.elements.submitAnswer.disabled = false;
     }
 
     initializeElements() {
@@ -381,8 +385,6 @@ class KlugBot {
         this.elements.nextQuestion.disabled = true;
         this.elements.speakQuestion.disabled = true;
         this.elements.micButton.disabled = true;
-        this.elements.answerInput.disabled = true;
-        this.elements.submitAnswer.disabled = true;
         this.elements.resultsSection.style.display = 'none';
         
         // Show quiz controls again
