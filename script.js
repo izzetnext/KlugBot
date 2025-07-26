@@ -9,7 +9,6 @@ class KlugBot {
         this.speechSynthesis = window.speechSynthesis;
         this.currentLanguage = 'en-US';
         this.isQuizActive = false;
-        this.autoSpeed = 0.5; // Default speed (5 seconds)
 
         this.initializeElements();
         this.initializeSpeechRecognition();
@@ -29,12 +28,12 @@ class KlugBot {
             micStatus: document.getElementById('mic-status'),
             questionText: document.getElementById('question-text'),
             currentQuestion: document.getElementById('current-question'),
-            userAnswer: document.getElementById('user-answer'),
+            answerInput: document.getElementById('answer-input'),
+            submitAnswer: document.getElementById('submit-answer'),
             feedback: document.getElementById('feedback'),
             score: document.getElementById('score'),
             totalScore: document.getElementById('total-score'),
             languageSelect: document.getElementById('language-select'),
-            speedSelect: document.getElementById('speed-select'),
             resultsSection: document.getElementById('results-section'),
             finalScore: document.getElementById('final-score'),
             finalTotal: document.getElementById('final-total'),
@@ -61,7 +60,7 @@ class KlugBot {
 
             this.recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript.toLowerCase().trim();
-                this.elements.userAnswer.textContent = transcript;
+                this.elements.answerInput.value = transcript;
                 this.checkAnswer(transcript);
             };
 
@@ -87,8 +86,13 @@ class KlugBot {
         this.elements.nextQuestion.addEventListener('click', () => this.nextQuestion());
         this.elements.speakQuestion.addEventListener('click', () => this.speakQuestion());
         this.elements.micButton.addEventListener('click', () => this.toggleListening());
+        this.elements.submitAnswer.addEventListener('click', () => this.submitAnswer());
+        this.elements.answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.submitAnswer();
+            }
+        });
         this.elements.languageSelect.addEventListener('change', () => this.updateLanguage());
-        this.elements.speedSelect.addEventListener('change', () => this.updateSpeed());
         this.elements.restartQuiz.addEventListener('click', () => this.restartQuiz());
     }
 
@@ -99,8 +103,12 @@ class KlugBot {
         }
     }
 
-    updateSpeed() {
-        this.autoSpeed = parseFloat(this.elements.speedSelect.value);
+    submitAnswer() {
+        const answer = this.elements.answerInput.value.trim();
+        if (answer) {
+            this.checkAnswer(answer);
+            this.elements.answerInput.value = '';
+        }
     }
 
     toggleQuiz() {
@@ -115,7 +123,6 @@ class KlugBot {
         this.isQuizActive = true;
         this.currentQuestionIndex = 0;
         this.score = 0;
-        this.autoSpeed = parseFloat(this.elements.speedSelect.value) || 0.5;
         
         // Get random questions for current language
         this.questions = getRandomQuestions(this.currentLanguage, 5);
@@ -127,11 +134,15 @@ class KlugBot {
         this.elements.nextQuestion.disabled = false;
         this.elements.speakQuestion.disabled = false;
         this.elements.micButton.disabled = false;
+        this.elements.submitAnswer.disabled = false;
         this.elements.totalScore.textContent = this.questions.length;
         this.elements.resultsSection.style.display = 'none';
         
+        // Make sure quiz controls are visible
+        document.querySelector('.quiz-controls').style.display = 'block';
+        
         // Clear previous state
-        this.elements.userAnswer.textContent = 'Your answers will appear here...';
+        this.elements.answerInput.value = '';
         this.elements.feedback.className = 'feedback';
         this.elements.feedback.textContent = '';
         
@@ -162,10 +173,10 @@ class KlugBot {
             }
             
             // Clear previous answer and feedback
-            this.elements.userAnswer.textContent = 'Your answers will appear here...';
+            this.elements.answerInput.value = '';
             this.elements.feedback.className = 'feedback';
             this.elements.feedback.textContent = '';
-            this.elements.micStatus.textContent = 'Question will be read aloud...';
+            this.elements.micStatus.textContent = 'Type your answer or use microphone after question is read';
             
             // Auto-speak question after a short delay
             setTimeout(() => {
@@ -217,7 +228,7 @@ class KlugBot {
             if (this.isQuizActive && !this.isListening) {
                 setTimeout(() => {
                     this.startListening();
-                    this.elements.micStatus.textContent = 'Listening for your answer...';
+                    this.elements.micStatus.textContent = 'Microphone active - speak or type your answer';
                 }, 500);
             }
         };
@@ -248,8 +259,8 @@ class KlugBot {
         }
         
         // Update status if quiz is active
-        if (this.isQuizActive && this.elements.micStatus.textContent === 'Listening for your answer...') {
-            this.elements.micStatus.textContent = 'Click microphone to answer again';
+        if (this.isQuizActive && this.elements.micStatus.textContent === 'Microphone active - speak or type your answer') {
+            this.elements.micStatus.textContent = 'Click microphone to answer again or type your answer';
         }
     }
 
@@ -266,8 +277,8 @@ class KlugBot {
         if (isCorrect) {
             this.score++;
             this.elements.feedback.className = 'feedback correct';
-            this.elements.feedback.textContent = '✅ Correct! Well done!';
-            this.speakFeedback('Correct! Well done!');
+            this.elements.feedback.textContent = '✅ Correct!';
+            this.speakFeedback('Correct!');
         } else {
             this.elements.feedback.className = 'feedback incorrect';
             const correctAnswer = question.correctAnswers[0];
@@ -279,13 +290,12 @@ class KlugBot {
         this.elements.score.textContent = this.score;
         this.elements.micStatus.textContent = 'Processing answer...';
         
-        // Auto move to next question after delay (based on speed setting)
-        const delay = this.autoSpeed === 0.5 ? 5000 : this.autoSpeed === 1.0 ? 10000 : 2000;
+        // Auto move to next question after short delay
         setTimeout(() => {
             if (this.isQuizActive) {
                 this.nextQuestion();
             }
-        }, delay);
+        }, 2000);
     }
 
     normalizeAnswer(answer) {
@@ -324,8 +334,12 @@ class KlugBot {
         const percentage = Math.round((this.score / this.questions.length) * 100);
         this.elements.percentage.textContent = percentage;
         
-        // Show results section
+        // Show results section and hide other controls
         this.elements.resultsSection.style.display = 'block';
+        
+        // Hide other sections to make room for results
+        document.querySelector('.quiz-controls').style.display = 'none';
+        
         this.elements.questionText.textContent = 'Quiz Complete! Check your results on the right.';
         
         // Update question info
@@ -357,6 +371,10 @@ class KlugBot {
         this.elements.speakQuestion.disabled = true;
         this.elements.micButton.disabled = true;
         this.elements.resultsSection.style.display = 'none';
+        
+        // Show quiz controls again
+        document.querySelector('.quiz-controls').style.display = 'block';
+        
         this.elements.questionText.textContent = 'Welcome to KlugBot! Click Play to begin.';
         
         // Update question info
@@ -367,10 +385,9 @@ class KlugBot {
         
         this.elements.score.textContent = '0';
         this.elements.totalScore.textContent = '5';
-        this.elements.userAnswer.textContent = 'Your answers will appear here...';
         this.elements.feedback.className = 'feedback';
         this.elements.feedback.textContent = '';
-        this.elements.micStatus.textContent = 'Click microphone to answer';
+        this.elements.micStatus.textContent = 'Start quiz to begin answering';
         
         // Stop any ongoing speech
         if (this.speechSynthesis.speaking) {
