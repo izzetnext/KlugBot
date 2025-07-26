@@ -9,6 +9,7 @@ class KlugBot {
         this.speechSynthesis = window.speechSynthesis;
         this.currentLanguage = 'en-US';
         this.isQuizActive = false;
+        this.autoSpeed = 0.5; // Default speed (5 seconds)
 
         this.initializeElements();
         this.initializeSpeechRecognition();
@@ -19,20 +20,21 @@ class KlugBot {
     initializeElements() {
         // Get DOM elements
         this.elements = {
-            startQuiz: document.getElementById('start-quiz'),
+            playQuiz: document.getElementById('play-quiz'),
+            prevQuestion: document.getElementById('prev-question'),
+            nextQuestion: document.getElementById('next-question'),
             speakQuestion: document.getElementById('speak-question'),
             micButton: document.getElementById('mic-button'),
             micIcon: document.getElementById('mic-icon'),
             micStatus: document.getElementById('mic-status'),
             questionText: document.getElementById('question-text'),
             currentQuestion: document.getElementById('current-question'),
-            totalQuestions: document.getElementById('total-questions'),
             userAnswer: document.getElementById('user-answer'),
             feedback: document.getElementById('feedback'),
-            progressFill: document.getElementById('progress-fill'),
             score: document.getElementById('score'),
             totalScore: document.getElementById('total-score'),
             languageSelect: document.getElementById('language-select'),
+            speedSelect: document.getElementById('speed-select'),
             resultsSection: document.getElementById('results-section'),
             finalScore: document.getElementById('final-score'),
             finalTotal: document.getElementById('final-total'),
@@ -80,10 +82,13 @@ class KlugBot {
     }
 
     bindEvents() {
-        this.elements.startQuiz.addEventListener('click', () => this.startQuiz());
+        this.elements.playQuiz.addEventListener('click', () => this.toggleQuiz());
+        this.elements.prevQuestion.addEventListener('click', () => this.previousQuestion());
+        this.elements.nextQuestion.addEventListener('click', () => this.nextQuestion());
         this.elements.speakQuestion.addEventListener('click', () => this.speakQuestion());
         this.elements.micButton.addEventListener('click', () => this.toggleListening());
         this.elements.languageSelect.addEventListener('change', () => this.updateLanguage());
+        this.elements.speedSelect.addEventListener('change', () => this.updateSpeed());
         this.elements.restartQuiz.addEventListener('click', () => this.restartQuiz());
     }
 
@@ -94,42 +99,70 @@ class KlugBot {
         }
     }
 
+    updateSpeed() {
+        this.autoSpeed = parseFloat(this.elements.speedSelect.value);
+    }
+
+    toggleQuiz() {
+        if (this.isQuizActive) {
+            this.pauseQuiz();
+        } else {
+            this.startQuiz();
+        }
+    }
+
     startQuiz() {
         this.isQuizActive = true;
         this.currentQuestionIndex = 0;
         this.score = 0;
+        this.autoSpeed = parseFloat(this.elements.speedSelect.value) || 0.5;
         
         // Get random questions for current language
         this.questions = getRandomQuestions(this.currentLanguage, 5);
         
         // Update UI
-        this.elements.startQuiz.disabled = true;
+        this.elements.playQuiz.textContent = '⏸';
+        this.elements.playQuiz.classList.add('pause');
+        this.elements.prevQuestion.disabled = false;
+        this.elements.nextQuestion.disabled = false;
         this.elements.speakQuestion.disabled = false;
         this.elements.micButton.disabled = false;
-        this.elements.totalQuestions.textContent = this.questions.length;
         this.elements.totalScore.textContent = this.questions.length;
         this.elements.resultsSection.style.display = 'none';
         
         // Clear previous state
-        this.elements.userAnswer.textContent = 'Your answer will appear here...';
+        this.elements.userAnswer.textContent = 'Your answers will appear here...';
         this.elements.feedback.className = 'feedback';
         this.elements.feedback.textContent = '';
         
         this.showCurrentQuestion();
     }
 
+    pauseQuiz() {
+        this.isQuizActive = false;
+        this.elements.playQuiz.textContent = '▶';
+        this.elements.playQuiz.classList.remove('pause');
+        
+        // Stop any ongoing speech
+        if (this.speechSynthesis.speaking) {
+            this.speechSynthesis.cancel();
+        }
+        this.stopListening();
+    }
+
     showCurrentQuestion() {
         if (this.currentQuestionIndex < this.questions.length) {
             const question = this.questions[this.currentQuestionIndex];
             this.elements.questionText.textContent = question.question;
-            this.elements.currentQuestion.textContent = this.currentQuestionIndex + 1;
             
-            // Update progress
-            const progress = ((this.currentQuestionIndex) / this.questions.length) * 100;
-            this.elements.progressFill.style.width = progress + '%';
+            // Update question info
+            const questionInfo = document.querySelector('.question-info');
+            if (questionInfo) {
+                questionInfo.innerHTML = `Question ${this.currentQuestionIndex + 1} of ${this.questions.length}<br>Ready to answer`;
+            }
             
             // Clear previous answer and feedback
-            this.elements.userAnswer.textContent = 'Your answer will appear here...';
+            this.elements.userAnswer.textContent = 'Your answers will appear here...';
             this.elements.feedback.className = 'feedback';
             this.elements.feedback.textContent = '';
             this.elements.micStatus.textContent = 'Question will be read aloud...';
@@ -140,6 +173,22 @@ class KlugBot {
                     this.speakQuestion();
                 }
             }, 1000);
+        } else {
+            this.endQuiz();
+        }
+    }
+
+    previousQuestion() {
+        if (this.currentQuestionIndex > 0) {
+            this.currentQuestionIndex--;
+            this.showCurrentQuestion();
+        }
+    }
+
+    nextQuestion() {
+        if (this.currentQuestionIndex < this.questions.length - 1) {
+            this.currentQuestionIndex++;
+            this.showCurrentQuestion();
         } else {
             this.endQuiz();
         }
@@ -230,11 +279,13 @@ class KlugBot {
         this.elements.score.textContent = this.score;
         this.elements.micStatus.textContent = 'Processing answer...';
         
-        // Move to next question after delay
+        // Auto move to next question after delay (based on speed setting)
+        const delay = this.autoSpeed === 0.5 ? 5000 : this.autoSpeed === 1.0 ? 10000 : 2000;
         setTimeout(() => {
-            this.currentQuestionIndex++;
-            this.showCurrentQuestion();
-        }, 3000);
+            if (this.isQuizActive) {
+                this.nextQuestion();
+            }
+        }, delay);
     }
 
     normalizeAnswer(answer) {
@@ -275,12 +326,19 @@ class KlugBot {
         
         // Show results section
         this.elements.resultsSection.style.display = 'block';
-        this.elements.questionText.textContent = 'Quiz Complete!';
+        this.elements.questionText.textContent = 'Quiz Complete! Check your results on the right.';
         
-        // Update progress to 100%
-        this.elements.progressFill.style.width = '100%';
+        // Update question info
+        const questionInfo = document.querySelector('.question-info');
+        if (questionInfo) {
+            questionInfo.innerHTML = `All ${this.questions.length} questions completed<br>Great job!`;
+        }
         
-        // Disable controls
+        // Reset controls
+        this.elements.playQuiz.textContent = '▶';
+        this.elements.playQuiz.classList.remove('pause');
+        this.elements.prevQuestion.disabled = true;
+        this.elements.nextQuestion.disabled = true;
         this.elements.speakQuestion.disabled = true;
         this.elements.micButton.disabled = true;
         this.elements.micStatus.textContent = 'Quiz finished';
@@ -292,17 +350,24 @@ class KlugBot {
 
     restartQuiz() {
         // Reset UI
-        this.elements.startQuiz.disabled = false;
+        this.elements.playQuiz.textContent = '▶';
+        this.elements.playQuiz.classList.remove('pause');
+        this.elements.prevQuestion.disabled = true;
+        this.elements.nextQuestion.disabled = true;
         this.elements.speakQuestion.disabled = true;
         this.elements.micButton.disabled = true;
         this.elements.resultsSection.style.display = 'none';
-        this.elements.questionText.textContent = 'Welcome to KlugBot! Click Start to begin.';
-        this.elements.currentQuestion.textContent = '0';
-        this.elements.totalQuestions.textContent = '0';
+        this.elements.questionText.textContent = 'Welcome to KlugBot! Click Play to begin.';
+        
+        // Update question info
+        const questionInfo = document.querySelector('.question-info');
+        if (questionInfo) {
+            questionInfo.innerHTML = '5 questions available<br>Ready when you are to start';
+        }
+        
         this.elements.score.textContent = '0';
-        this.elements.totalScore.textContent = '0';
-        this.elements.progressFill.style.width = '0%';
-        this.elements.userAnswer.textContent = 'Your answer will appear here...';
+        this.elements.totalScore.textContent = '5';
+        this.elements.userAnswer.textContent = 'Your answers will appear here...';
         this.elements.feedback.className = 'feedback';
         this.elements.feedback.textContent = '';
         this.elements.micStatus.textContent = 'Click microphone to answer';
@@ -313,6 +378,7 @@ class KlugBot {
         }
         
         this.stopListening();
+        this.isQuizActive = false;
     }
 }
 

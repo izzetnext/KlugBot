@@ -8,146 +8,249 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
-    padding: 20px;
+    padding: 5vh 5vw; /* 5% padding from all sides */
 }
 
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
+.app-container {
+    width: 100%;
+    height: 90vh; /* Use 90% of viewport height */
     background: white;
     border-radius: 20px;
     box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
     overflow: hidden;
 }
 
+/* Header */
 header {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     color: white;
-    padding: 30px;
-    text-align: center;
+    padding: 20px 30px;
 }
 
-header h1 {
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.logo-icon {
     font-size: 2.5em;
-    margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
-header p {
-    font-size: 1.1em;
+.logo-text h1 {
+    font-size: 2em;
+    margin-bottom: 5px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.logo-text p {
+    font-size: 1em;
     opacity: 0.9;
 }
 
-main {
-    padding: 30px;
-}
-
-/* İki Kolonlu Layout */
-.main-layout {
+/* Main Content */
+.main-content {
+    flex: 1;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    min-height: 500px;
+    gap: 0;
+    height: 100%;
 }
 
-.left-column {
+/* Left Panel - Question and Answer */
+.left-panel {
+    padding: 30px;
     display: flex;
     flex-direction: column;
     gap: 20px;
-}
-
-.right-column {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.controls-panel {
     background: #f8f9fa;
-    padding: 25px;
-    border-radius: 15px;
-    border: 2px solid #e9ecef;
+    border-right: 2px solid #e9ecef;
 }
 
-.quiz-section {
-    margin-bottom: 30px;
-}
-
-.question-display {
-    background: #f8f9fa;
+.question-area {
+    flex: 3;
+    background: white;
     padding: 30px;
     border-radius: 15px;
     border-left: 5px solid #4facfe;
-    flex: 1;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
-.question-display h2 {
+.question-area h2 {
     font-size: 1.8em;
     color: #333;
     line-height: 1.4;
-    margin-bottom: 15px;
-    min-height: 80px;
+    margin-bottom: 20px;
+    min-height: 120px;
 }
 
-.question-counter {
-    text-align: right;
+.question-info {
     color: #666;
-    font-weight: bold;
+    font-size: 0.9em;
+    text-align: right;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
 }
 
-.controls {
+.answer-area {
+    flex: 1;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    border-left: 5px solid #28a745;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+#user-answer {
+    font-size: 1.1em;
+    color: #333;
+    margin-bottom: 15px;
+    min-height: 60px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px solid #dee2e6;
+}
+
+.feedback {
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.feedback.correct {
+    background: #d4edda;
+    color: #155724;
+    border: 2px solid #c3e6cb;
+}
+
+.feedback.incorrect {
+    background: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}
+
+/* Right Panel - Controls */
+.right-panel {
+    padding: 30px;
+    background: white;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 25px;
 }
 
-.controls-panel .btn-primary, 
-.controls-panel .btn-secondary {
-    width: 100%;
-    margin-bottom: 15px;
+.quiz-controls h3 {
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+    font-size: 1.3em;
 }
 
-.btn-primary, .btn-secondary {
-    padding: 15px 30px;
+/* Media Player Controls */
+.media-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.control-btn {
+    width: 50px;
+    height: 50px;
     border: none;
-    border-radius: 25px;
-    font-size: 1.1em;
-    font-weight: bold;
+    border-radius: 50%;
+    background: #6c757d;
+    color: white;
+    font-size: 1.2em;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-.btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+.control-btn:hover:not(:disabled) {
+    background: #5a6268;
+    transform: scale(1.1);
 }
 
-.btn-primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+.control-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.5;
 }
 
-.btn-secondary {
+.play-btn {
+    width: 70px;
+    height: 70px;
+    border: none;
+    border-radius: 50%;
     background: #28a745;
     color: white;
+    font-size: 2em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
 }
 
-.btn-secondary:hover:not(:disabled) {
+.play-btn:hover {
     background: #218838;
+    transform: scale(1.1);
+}
+
+.play-btn.pause {
+    background: #dc3545;
+}
+
+.control-text {
+    text-align: center;
+    color: #666;
+    font-size: 0.9em;
+    margin-bottom: 20px;
+}
+
+/* Speak Question Button */
+.speak-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #17a2b8;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.speak-btn:hover:not(:disabled) {
+    background: #138496;
     transform: translateY(-2px);
 }
 
-.btn-primary:disabled, .btn-secondary:disabled {
+.speak-btn:disabled {
     background: #ccc;
     cursor: not-allowed;
     opacity: 0.6;
 }
 
+/* Microphone Section */
 .microphone-section {
     text-align: center;
-    padding: 20px;
+    padding: 25px;
     background: #f8f9fa;
     border-radius: 15px;
+    border: 2px solid #dee2e6;
+    margin-bottom: 20px;
 }
 
 .mic-btn {
@@ -190,158 +293,136 @@ main {
 #mic-status {
     color: #666;
     font-weight: bold;
+    font-size: 0.9em;
 }
 
-.answer-section {
-    background: #e9ecef;
-    padding: 25px;
-    border-radius: 15px;
-    flex: 1;
-    min-height: 200px;
+/* Language and Speed Sections */
+.language-section, .speed-section {
+    margin-bottom: 20px;
 }
 
-#user-answer {
-    font-size: 1.1em;
-    color: #333;
-    margin-bottom: 15px;
-    min-height: 60px;
-    padding: 15px;
-    background: white;
-    border-radius: 10px;
-    border: 2px solid #dee2e6;
-}
-
-.feedback {
-    padding: 15px;
-    border-radius: 10px;
+.language-section label, .speed-section label {
+    display: block;
+    margin-bottom: 8px;
     font-weight: bold;
-    text-align: center;
-    margin-top: 15px;
-    transition: all 0.3s ease;
+    color: #333;
 }
 
-.feedback.correct {
-    background: #d4edda;
-    color: #155724;
-    border: 2px solid #c3e6cb;
-}
-
-.feedback.incorrect {
-    background: #f8d7da;
-    color: #721c24;
-    border: 2px solid #f5c6cb;
-}
-
-.progress-section {
-    background: white;
-    padding: 20px;
-    border-radius: 15px;
-    border: 2px solid #e9ecef;
-}
-
-.progress-bar {
+#language-select, #speed-select {
     width: 100%;
-    height: 20px;
-    background: #e9ecef;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 15px;
-}
-
-.progress-fill {
-    height: 100%;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    width: 0%;
-    transition: width 0.5s ease;
-}
-
-.score {
-    text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-}
-
-.language-selection {
-    text-align: center;
-    margin-top: 15px;
-    padding-top: 15px;
-    border-top: 2px solid #dee2e6;
-}
-
-.language-selection label {
-    margin-right: 10px;
-    font-weight: bold;
-    color: #333;
-}
-
-#language-select {
-    padding: 10px 15px;
+    padding: 12px;
     border: 2px solid #dee2e6;
-    border-radius: 10px;
+    border-radius: 8px;
     font-size: 1em;
     background: white;
 }
 
-.results-section {
+/* Score Section */
+.score-section {
+    background: #e9ecef;
+    padding: 20px;
+    border-radius: 15px;
     text-align: center;
+}
+
+.score-display h4 {
+    color: #333;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.score-display p {
+    color: #666;
+    font-size: 0.9em;
+}
+
+/* Results Section */
+.results-section {
+    background: #d4edda;
     padding: 25px;
-    background: #f8f9fa;
     border-radius: 15px;
     border: 2px solid #28a745;
+    text-align: center;
 }
 
 .results-section h3 {
-    color: #333;
+    color: #155724;
     margin-bottom: 15px;
-    font-size: 1.5em;
-}
-
-.final-score {
-    margin-bottom: 20px;
+    font-size: 1.4em;
 }
 
 .final-score p {
+    color: #155724;
     font-size: 1.1em;
     margin-bottom: 8px;
-    color: #333;
+    font-weight: bold;
+}
+
+.restart-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 10px;
+    background: #28a745;
+    color: white;
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 15px;
+}
+
+.restart-btn:hover {
+    background: #218838;
+    transform: translateY(-2px);
 }
 
 /* Mobile Responsive */
 @media (max-width: 768px) {
-    .container {
-        margin: 10px;
-        border-radius: 15px;
+    body {
+        padding: 3vh 3vw;
     }
     
-    .main-layout {
+    .app-container {
+        height: 94vh;
+    }
+    
+    .main-content {
         grid-template-columns: 1fr;
-        gap: 20px;
+        grid-template-rows: 2fr 1fr;
     }
     
-    header {
+    .left-panel, .right-panel {
         padding: 20px;
     }
     
-    header h1 {
-        font-size: 2em;
-    }
-    
-    main {
+    .question-area {
         padding: 20px;
     }
     
-    .question-display {
-        padding: 20px;
-    }
-    
-    .question-display h2 {
+    .question-area h2 {
         font-size: 1.4em;
-        min-height: 60px;
+        min-height: 80px;
     }
     
-    .controls-panel {
+    .answer-area {
         padding: 20px;
+    }
+    
+    .media-controls {
+        gap: 10px;
+    }
+    
+    .control-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1em;
+    }
+    
+    .play-btn {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5em;
     }
     
     .mic-btn {
@@ -352,11 +433,6 @@ main {
     #mic-icon {
         width: 35px;
         height: 35px;
-    }
-    
-    .answer-section {
-        min-height: 150px;
-        padding: 20px;
     }
 }
 

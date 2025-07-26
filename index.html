@@ -7,71 +7,99 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
+    <div class="app-container">
         <header>
-            <h1>🤖 KlugBot</h1>
-            <p>Interactive Voice Quiz System v1.0</p>
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🤖</span>
+                    <div class="logo-text">
+                        <h1>KlugBot</h1>
+                        <p>Interactive Quiz System v1.0</p>
+                    </div>
+                </div>
+            </div>
         </header>
 
-        <main>
-            <div class="main-layout">
-                <!-- Sol Kolon - Soru ve Cevap Alanı -->
-                <div class="left-column">
-                    <div class="question-display">
-                        <h2 id="question-text">Welcome to KlugBot! Click Start to begin.</h2>
-                        <div class="question-counter">
-                            <span id="current-question">0</span> / <span id="total-questions">0</span>
-                        </div>
-                    </div>
-
-                    <div class="answer-section">
-                        <p id="user-answer">Your answer will appear here...</p>
-                        <div class="feedback" id="feedback"></div>
+        <main class="main-content">
+            <!-- Left Side - Question and Answer Areas -->
+            <div class="left-panel">
+                <div class="question-area">
+                    <h2 id="question-text">Welcome to KlugBot! Click Play to begin.</h2>
+                    <div class="question-info">
+                        <span id="current-question">5</span> questions available<br>
+                        Ready when you are to start
                     </div>
                 </div>
 
-                <!-- Sağ Kolon - Kontroller ve Sonuçlar -->
-                <div class="right-column">
-                    <div class="controls-panel">
-                        <button id="start-quiz" class="btn-primary">Start Quiz</button>
-                        <button id="speak-question" class="btn-secondary" disabled>🔊 Speak Question</button>
-                        
-                        <div class="microphone-section">
-                            <button id="mic-button" class="mic-btn" disabled>
-                                <img id="mic-icon" src="mic.gif" alt="Microphone">
-                            </button>
-                            <p id="mic-status">Click microphone to answer</p>
-                        </div>
+                <div class="answer-area">
+                    <p id="user-answer">Your answers will appear here...</p>
+                    <div class="feedback" id="feedback"></div>
+                </div>
+            </div>
 
-                        <div class="language-selection">
-                            <label for="language-select">Language:</label>
-                            <select id="language-select">
-                                <option value="en-US">English</option>
-                                <option value="tr-TR">Türkçe</option>
-                                <option value="de-DE">Deutsch</option>
-                                <option value="es-ES">Español</option>
-                                <option value="fr-FR">Français</option>
-                            </select>
-                        </div>
+            <!-- Right Side - Quiz Controls -->
+            <div class="right-panel">
+                <div class="quiz-controls">
+                    <h3>Quiz Controls</h3>
+                    
+                    <!-- Media Player Controls -->
+                    <div class="media-controls">
+                        <button id="prev-question" class="control-btn" disabled>⏮</button>
+                        <button id="play-quiz" class="play-btn">▶</button>
+                        <button id="next-question" class="control-btn" disabled>⏭</button>
+                    </div>
+                    <p class="control-text">Press Play to start the quiz</p>
+
+                    <!-- Speak Question Button -->
+                    <button id="speak-question" class="speak-btn" disabled>🔊 Speak Question</button>
+
+                    <!-- Microphone Section -->
+                    <div class="microphone-section">
+                        <button id="mic-button" class="mic-btn" disabled>
+                            <img id="mic-icon" src="mic.gif" alt="Microphone">
+                        </button>
+                        <p id="mic-status">Click microphone to answer</p>
                     </div>
 
-                    <div class="progress-section">
-                        <div class="progress-bar">
-                            <div id="progress-fill" class="progress-fill"></div>
-                        </div>
-                        <div class="score">
-                            Score: <span id="score">0</span> / <span id="total-score">0</span>
-                        </div>
+                    <!-- Language Selection -->
+                    <div class="language-section">
+                        <label for="language-select">Language:</label>
+                        <select id="language-select">
+                            <option value="en-US">English</option>
+                            <option value="tr-TR">Türkçe</option>
+                            <option value="de-DE">Deutsch</option>
+                            <option value="es-ES">Español</option>
+                            <option value="fr-FR">Français</option>
+                        </select>
                     </div>
 
-                    <div class="results-section" id="results-section" style="display: none;">
-                        <h3>Quiz Complete!</h3>
-                        <div class="final-score">
-                            <p>Final Score: <span id="final-score">0</span> / <span id="final-total">0</span></p>
-                            <p>Percentage: <span id="percentage">0</span>%</p>
-                        </div>
-                        <button id="restart-quiz" class="btn-primary">Start New Quiz</button>
+                    <!-- Auto Speed Selection -->
+                    <div class="speed-section">
+                        <label for="speed-select">Auto Speed:</label>
+                        <select id="speed-select">
+                            <option value="0.5">Normal (5s)</option>
+                            <option value="1.0">Fast (10s)</option>
+                            <option value="2.0">Slow (2s)</option>
+                        </select>
                     </div>
+
+                    <!-- Score Display -->
+                    <div class="score-section">
+                        <div class="score-display">
+                            <h4>Score: <span id="score">0</span> / <span id="total-score">5</span></h4>
+                            <p>Quiz not started</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div class="results-section" id="results-section" style="display: none;">
+                    <h3>Quiz Complete!</h3>
+                    <div class="final-score">
+                        <p>Final Score: <span id="final-score">0</span> / <span id="final-total">0</span></p>
+                        <p>Percentage: <span id="percentage">0</span>%</p>
+                    </div>
+                    <button id="restart-quiz" class="restart-btn">Start New Quiz</button>
                 </div>
             </div>
         </main>
