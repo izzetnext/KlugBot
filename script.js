@@ -111,6 +111,14 @@ class KlugBot {
         }
     }
 
+    submitAnswer() {
+        const answer = this.elements.answerInput.value.trim();
+        if (answer) {
+            this.checkAnswer(answer);
+            this.elements.answerInput.value = '';
+        }
+    }
+
     toggleQuiz() {
         if (this.isQuizActive) {
             this.pauseQuiz();
@@ -223,13 +231,15 @@ class KlugBot {
         utterance.rate = 0.8;
         utterance.pitch = 1;
         
-        // Auto-start listening when question finishes speaking
+        // Auto-start listening when question finishes speaking (only in voice mode)
         utterance.onend = () => {
-            if (this.isQuizActive && !this.isListening) {
+            if (this.isQuizActive && !this.isListening && this.elements.voiceMode.checked) {
                 setTimeout(() => {
                     this.startListening();
                     this.elements.micStatus.textContent = 'Microphone active - speak or type your answer';
                 }, 500);
+            } else if (!this.elements.voiceMode.checked) {
+                this.elements.micStatus.textContent = 'Type your answer and press Send';
             }
         };
         
@@ -370,6 +380,8 @@ class KlugBot {
         this.elements.nextQuestion.disabled = true;
         this.elements.speakQuestion.disabled = true;
         this.elements.micButton.disabled = true;
+        this.elements.answerInput.disabled = true;
+        this.elements.submitAnswer.disabled = true;
         this.elements.resultsSection.style.display = 'none';
         
         // Show quiz controls again
