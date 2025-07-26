@@ -132,7 +132,7 @@ class KlugBot {
             this.elements.userAnswer.textContent = 'Your answer will appear here...';
             this.elements.feedback.className = 'feedback';
             this.elements.feedback.textContent = '';
-            this.elements.micStatus.textContent = 'Click microphone to answer';
+            this.elements.micStatus.textContent = 'Question will be read aloud...';
             
             // Auto-speak question after a short delay
             setTimeout(() => {
@@ -163,6 +163,16 @@ class KlugBot {
         utterance.rate = 0.8;
         utterance.pitch = 1;
         
+        // Auto-start listening when question finishes speaking
+        utterance.onend = () => {
+            if (this.isQuizActive && !this.isListening) {
+                setTimeout(() => {
+                    this.startListening();
+                    this.elements.micStatus.textContent = 'Listening for your answer...';
+                }, 500);
+            }
+        };
+        
         this.speechSynthesis.speak(utterance);
     }
 
@@ -187,6 +197,11 @@ class KlugBot {
         if (this.recognition) {
             this.recognition.stop();
         }
+        
+        // Update status if quiz is active
+        if (this.isQuizActive && this.elements.micStatus.textContent === 'Listening for your answer...') {
+            this.elements.micStatus.textContent = 'Click microphone to answer again';
+        }
     }
 
     checkAnswer(userAnswer) {
@@ -195,6 +210,9 @@ class KlugBot {
             this.normalizeAnswer(userAnswer).includes(this.normalizeAnswer(answer)) ||
             this.normalizeAnswer(answer).includes(this.normalizeAnswer(userAnswer))
         );
+
+        // Stop listening immediately after answer is received
+        this.stopListening();
 
         if (isCorrect) {
             this.score++;
@@ -210,6 +228,7 @@ class KlugBot {
 
         // Update score display
         this.elements.score.textContent = this.score;
+        this.elements.micStatus.textContent = 'Processing answer...';
         
         // Move to next question after delay
         setTimeout(() => {
