@@ -26,7 +26,7 @@ body {
 header {
     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
     color: white;
-    padding: 20px 30px;
+    padding: 10px 30px; /* Reduced from 20px to 10px */
 }
 
 .header-content {
@@ -37,22 +37,22 @@ header {
 .logo {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px; /* Reduced from 15px to 10px */
 }
 
 .logo-icon {
-    font-size: 2.5em;
+    font-size: 1.8em; /* Reduced from 2.5em */
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .logo-text h1 {
-    font-size: 2em;
-    margin-bottom: 5px;
+    font-size: 1.5em; /* Reduced from 2em */
+    margin-bottom: 2px; /* Reduced from 5px */
     text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
 }
 
 .logo-text p {
-    font-size: 1em;
+    font-size: 0.8em; /* Reduced from 1em */
     opacity: 0.9;
 }
 
@@ -67,29 +67,29 @@ header {
 
 /* Left Panel - Question and Answer */
 .left-panel {
-    padding: 30px;
+    padding: 20px; /* Reduced from 30px */
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px; /* Reduced from 20px */
     background: #f8f9fa;
     border-right: 2px solid #e9ecef;
 }
 
 .question-area {
-    flex: 3;
+    flex: 2; /* Reduced from 3 to 2 (about 30% smaller) */
     background: white;
-    padding: 30px;
+    padding: 20px; /* Reduced from 30px */
     border-radius: 15px;
     border-left: 5px solid #4facfe;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
 }
 
 .question-area h2 {
-    font-size: 1.8em;
+    font-size: 1.5em; /* Reduced from 1.8em */
     color: #333;
-    line-height: 1.4;
-    margin-bottom: 20px;
-    min-height: 120px;
+    line-height: 1.3; /* Reduced from 1.4 */
+    margin-bottom: 15px; /* Reduced from 20px */
+    min-height: 80px; /* Reduced from 120px */
 }
 
 .question-info {
@@ -101,23 +101,118 @@ header {
 }
 
 .answer-area {
-    flex: 1;
+    flex: 2; /* Increased from 1 to 2 to give more space */
     background: white;
-    padding: 25px;
+    padding: 20px; /* Reduced from 25px */
     border-radius: 15px;
     border-left: 5px solid #28a745;
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Increased for better spacing */
 }
 
-#user-answer {
-    font-size: 1.1em;
-    color: #333;
-    margin-bottom: 15px;
-    min-height: 60px;
-    padding: 15px;
+.answer-input {
     background: #f8f9fa;
+    padding: 15px;
     border-radius: 10px;
     border: 2px solid #dee2e6;
+}
+
+.answer-input h4 {
+    color: #333;
+    font-size: 1em;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    align-items: stretch;
+    margin-bottom: 8px;
+}
+
+#answer-input {
+    flex: 1;
+    padding: 12px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    font-size: 1em;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+#answer-input:focus {
+    outline: none;
+    border-color: #4facfe;
+    box-shadow: 0 0 5px rgba(79, 172, 254, 0.3);
+}
+
+#answer-input.voice-input {
+    border-color: #28a745;
+    background: #f0fff4;
+}
+
+.input-help {
+    font-size: 0.8em;
+    color: #666;
+    margin: 0;
+    font-style: italic;
+}
+
+.submit-btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #28a745;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.feedback {
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #28a745;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.submit-btn:hover:not(:disabled) {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+.submit-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .feedback {
@@ -142,19 +237,14 @@ header {
 
 /* Right Panel - Controls */
 .right-panel {
-    padding: 30px;
+    padding: 20px; /* Reduced from 30px */
     background: white;
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 15px; /* Reduced from 25px */
 }
 
-.quiz-controls h3 {
-    color: #333;
-    margin-bottom: 20px;
-    text-align: center;
-    font-size: 1.3em;
-}
+/* Removed .quiz-controls h3 styles since we removed the heading */
 
 /* Media Player Controls */
 .media-controls {
@@ -220,16 +310,16 @@ header {
 /* Speak Question Button */
 .speak-btn {
     width: 100%;
-    padding: 15px;
+    padding: 12px; /* Reduced from 15px */
     border: none;
     border-radius: 10px;
     background: #17a2b8;
     color: white;
-    font-size: 1.1em;
+    font-size: 1em; /* Reduced from 1.1em */
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced from 20px */
 }
 
 .speak-btn:hover:not(:disabled) {
@@ -246,22 +336,22 @@ header {
 /* Microphone Section */
 .microphone-section {
     text-align: center;
-    padding: 25px;
+    padding: 15px; /* Reduced from 25px */
     background: #f8f9fa;
     border-radius: 15px;
     border: 2px solid #dee2e6;
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced from 20px */
 }
 
 .mic-btn {
     background: none;
     border: 3px solid #dc3545;
     border-radius: 50%;
-    width: 80px;
-    height: 80px;
+    width: 60px; /* Reduced from 80px */
+    height: 60px; /* Reduced from 80px */
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-bottom: 15px;
+    margin-bottom: 10px; /* Reduced from 15px */
 }
 
 .mic-btn:hover:not(:disabled) {
@@ -286,34 +376,95 @@ header {
 }
 
 #mic-icon {
-    width: 40px;
-    height: 40px;
+    width: 30px; /* Reduced from 40px */
+    height: 30px; /* Reduced from 40px */
 }
 
 #mic-status {
     color: #666;
     font-weight: bold;
+    font-size: 0.8em; /* Reduced from 0.9em */
+    margin-bottom: 10px; /* Reduced from 15px */
+}
+
+/* Voice Mode Toggle */
+.mic-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.3s;
+    border-radius: 24px;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #28a745;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+.toggle-label {
     font-size: 0.9em;
+    color: #666;
+    font-weight: bold;
 }
 
 /* Language and Speed Sections */
 .language-section, .speed-section {
-    margin-bottom: 20px;
+    margin-bottom: 15px; /* Reduced from 20px */
 }
 
 .language-section label, .speed-section label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 5px; /* Reduced from 8px */
     font-weight: bold;
     color: #333;
+    font-size: 0.9em; /* Added smaller font size */
 }
 
 #language-select, #speed-select {
     width: 100%;
-    padding: 12px;
+    padding: 8px; /* Reduced from 12px */
     border: 2px solid #dee2e6;
     border-radius: 8px;
-    font-size: 1em;
+    font-size: 0.9em; /* Reduced from 1em */
     background: white;
 }
 
@@ -407,6 +558,19 @@ header {
     
     .answer-area {
         padding: 20px;
+    }
+    
+    .voice-answer, .written-answer {
+        padding: 12px;
+    }
+    
+    .input-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .submit-btn {
+        padding: 12px;
     }
     
     .media-controls {

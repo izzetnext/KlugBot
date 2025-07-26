@@ -29,7 +29,8 @@ class KlugBot {
             micStatus: document.getElementById('mic-status'),
             questionText: document.getElementById('question-text'),
             currentQuestion: document.getElementById('current-question'),
-            userAnswer: document.getElementById('user-answer'),
+            answerInput: document.getElementById('answer-input'),
+            submitAnswer: document.getElementById('submit-answer'),
             feedback: document.getElementById('feedback'),
             score: document.getElementById('score'),
             totalScore: document.getElementById('total-score'),
@@ -61,7 +62,7 @@ class KlugBot {
 
             this.recognition.onresult = (event) => {
                 const transcript = event.results[0][0].transcript.toLowerCase().trim();
-                this.elements.userAnswer.textContent = transcript;
+                this.elements.answerInput.value = transcript;
                 this.checkAnswer(transcript);
             };
 
@@ -87,6 +88,12 @@ class KlugBot {
         this.elements.nextQuestion.addEventListener('click', () => this.nextQuestion());
         this.elements.speakQuestion.addEventListener('click', () => this.speakQuestion());
         this.elements.micButton.addEventListener('click', () => this.toggleListening());
+        this.elements.submitAnswer.addEventListener('click', () => this.submitAnswer());
+        this.elements.answerInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.submitAnswer();
+            }
+        });
         this.elements.languageSelect.addEventListener('change', () => this.updateLanguage());
         this.elements.speedSelect.addEventListener('change', () => this.updateSpeed());
         this.elements.restartQuiz.addEventListener('click', () => this.restartQuiz());
@@ -101,6 +108,14 @@ class KlugBot {
 
     updateSpeed() {
         this.autoSpeed = parseFloat(this.elements.speedSelect.value);
+    }
+
+    submitAnswer() {
+        const answer = this.elements.answerInput.value.trim();
+        if (answer) {
+            this.checkAnswer(answer);
+            this.elements.answerInput.value = '';
+        }
     }
 
     toggleQuiz() {
@@ -131,7 +146,7 @@ class KlugBot {
         this.elements.resultsSection.style.display = 'none';
         
         // Clear previous state
-        this.elements.userAnswer.textContent = 'Your answers will appear here...';
+        this.elements.answerInput.value = '';
         this.elements.feedback.className = 'feedback';
         this.elements.feedback.textContent = '';
         
@@ -162,7 +177,7 @@ class KlugBot {
             }
             
             // Clear previous answer and feedback
-            this.elements.userAnswer.textContent = 'Your answers will appear here...';
+            this.elements.answerInput.value = '';
             this.elements.feedback.className = 'feedback';
             this.elements.feedback.textContent = '';
             this.elements.micStatus.textContent = 'Question will be read aloud...';
@@ -212,13 +227,15 @@ class KlugBot {
         utterance.rate = 0.8;
         utterance.pitch = 1;
         
-        // Auto-start listening when question finishes speaking
+        // Auto-start listening when question finishes speaking (only in voice mode)
         utterance.onend = () => {
-            if (this.isQuizActive && !this.isListening) {
+            if (this.isQuizActive && !this.isListening && this.elements.voiceMode.checked) {
                 setTimeout(() => {
                     this.startListening();
                     this.elements.micStatus.textContent = 'Listening for your answer...';
                 }, 500);
+            } else if (!this.elements.voiceMode.checked) {
+                this.elements.micStatus.textContent = 'Type your answer and press Send';
             }
         };
         
@@ -356,6 +373,8 @@ class KlugBot {
         this.elements.nextQuestion.disabled = true;
         this.elements.speakQuestion.disabled = true;
         this.elements.micButton.disabled = true;
+        this.elements.answerInput.disabled = true;
+        this.elements.submitAnswer.disabled = true;
         this.elements.resultsSection.style.display = 'none';
         this.elements.questionText.textContent = 'Welcome to KlugBot! Click Play to begin.';
         
@@ -367,7 +386,6 @@ class KlugBot {
         
         this.elements.score.textContent = '0';
         this.elements.totalScore.textContent = '5';
-        this.elements.userAnswer.textContent = 'Your answers will appear here...';
         this.elements.feedback.className = 'feedback';
         this.elements.feedback.textContent = '';
         this.elements.micStatus.textContent = 'Click microphone to answer';
