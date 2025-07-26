@@ -231,15 +231,13 @@ class KlugBot {
         utterance.rate = 0.8;
         utterance.pitch = 1;
         
-        // Auto-start listening when question finishes speaking (only in voice mode)
+        // Auto-start listening when question finishes speaking
         utterance.onend = () => {
-            if (this.isQuizActive && !this.isListening && this.elements.voiceMode.checked) {
+            if (this.isQuizActive && !this.isListening) {
                 setTimeout(() => {
                     this.startListening();
                     this.elements.micStatus.textContent = 'Microphone active - speak or type your answer';
                 }, 500);
-            } else if (!this.elements.voiceMode.checked) {
-                this.elements.micStatus.textContent = 'Type your answer and press Send';
             }
         };
         
@@ -256,6 +254,9 @@ class KlugBot {
 
     startListening() {
         if (this.recognition && !this.isListening) {
+            this.isListening = true;
+            this.elements.micButton.classList.add('recording');
+            this.elements.micIcon.src = 'mic-animate.gif';
             this.recognition.start();
         }
     }
